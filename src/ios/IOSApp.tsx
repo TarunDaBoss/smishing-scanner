@@ -5,6 +5,7 @@ import { usePhoneScreens } from '../shared/usePhoneScreens'
 import { ConfirmAlert } from './ConfirmAlert'
 import { ConversationList } from './ConversationList'
 import { StatusBar } from './StatusBar'
+import { NotificationBanner } from './NotificationBanner'
 import { ThreadView } from './ThreadView'
 import { Toast } from './Toast'
 import { WhyFlaggedSheet } from './WhyFlaggedSheet'
@@ -31,7 +32,7 @@ export function IOSApp({ framed }: { framed: boolean }) {
         </div>
         {threadPresence.mounted && thread && (
           <div className="ios-layer ios-thread-layer" data-open={threadPresence.visible} inert={!openThread || covered}>
-            <ThreadView thread={thread} />
+            <ThreadView key={thread.id} thread={thread} />
           </div>
         )}
       </div>
@@ -41,6 +42,7 @@ export function IOSApp({ framed }: { framed: boolean }) {
       )}
       {alertThread && <ConfirmAlert thread={alertThread} />}
       <Toast />
+      <NotificationBanner />
       {framed && <div className="ios-home-indicator" aria-hidden="true" />}
     </div>
   )

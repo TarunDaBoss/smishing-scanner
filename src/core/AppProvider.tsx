@@ -7,6 +7,7 @@ import { useBackStack } from './useBackStack'
 
 const SCAN_MS = 1500
 let nextMessageId = 1
+let nextIncomingId = 1
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, undefined, initialState)
@@ -16,10 +17,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [state.nav])
 
   const onNav = useCallback((nav: Nav) => dispatch({ type: 'nav', nav }), [])
-  const { push, back, backToList } = useBackStack(onNav)
+  const { push, back, backToList, openFromList } = useBackStack(onNav)
 
   const actions = useMemo<AppActions>(
     () => ({
+      receiveText: (text) => dispatch({ type: 'receive', id: nextIncomingId++, text, at: Date.now() }),
+      clearNotification: (id) => dispatch({ type: 'clear-notification', id }),
+      openNotification: (threadId, id) => {
+        dispatch({ type: 'clear-notification', id })
+        openFromList({ threadId, sheetMessageId: null }, navRef.current)
+      },
       setPlatform: (platform) => dispatch({ type: 'set-platform', platform }),
       setSearch: (search) => dispatch({ type: 'set-search', search }),
       setDraft: (threadId, text) => dispatch({ type: 'set-draft', threadId, text }),
@@ -56,7 +63,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         window.setTimeout(() => dispatch({ type: 'scan-done', messageId, result: link }), SCAN_MS)
       },
     }),
-    [back, backToList, push],
+    [back, backToList, openFromList, push],
   )
 
   const value = useMemo(() => ({ state, actions }), [state, actions])

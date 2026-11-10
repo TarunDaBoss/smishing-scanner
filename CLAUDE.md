@@ -9,8 +9,7 @@ Android (Samsung Messages, One UI), switchable with shared state.
 - **Commands:** `npm run dev`, `npm test`, `npm run lint`, `npm run build`
 
 ## Status
-- Done: detection, iPhone version, Android version.
-- Next: the test-text panel and notifications, then publishing.
+- Done: detection, iPhone version, Android version, test-text panel, publishing.
 
 ## Key decisions
 

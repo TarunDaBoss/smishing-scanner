@@ -5,6 +5,7 @@ import { usePhoneScreens } from '../shared/usePhoneScreens'
 import { ConfirmAlert } from './ConfirmAlert'
 import { ConversationList } from './ConversationList'
 import { StatusBar } from './StatusBar'
+import { NotificationBanner } from './NotificationBanner'
 import { ThreadView } from './ThreadView'
 import { Toast } from './Toast'
 import { WhyFlaggedSheet } from './WhyFlaggedSheet'
@@ -31,7 +32,7 @@ export function AndroidApp({ framed }: { framed: boolean }) {
         </div>
         {threadPresence.mounted && thread && (
           <div className="android-layer android-thread-layer" data-open={threadPresence.visible} inert={!openThread || covered}>
-            <ThreadView thread={thread} />
+            <ThreadView key={thread.id} thread={thread} />
           </div>
         )}
       </div>
@@ -41,6 +42,7 @@ export function AndroidApp({ framed }: { framed: boolean }) {
       )}
       {alertThread && <ConfirmAlert thread={alertThread} />}
       <Toast />
+      <NotificationBanner />
       {framed && <div className="android-gesture-bar" aria-hidden="true" />}
     </div>
   )

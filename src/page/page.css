@@ -28,9 +28,64 @@ body {
 
 .stage { grid-column: 2; display: flex; flex-direction: column; align-items: center; gap: 14px; }
 
-.page-side { grid-column: 3; max-width: 360px; padding-top: 48px; }
+.page-side { grid-column: 3; width: 100%; max-width: 380px; padding-top: 48px; }
 .page-title { margin: 0 0 8px; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
-.page-intro { margin: 0; font-size: 16px; line-height: 1.45; color: var(--page-text-2); }
+.page-intro { margin: 0 0 20px; font-size: 16px; line-height: 1.45; color: var(--page-text-2); }
+
+.test-panel { padding: 18px; border-radius: 20px; background: #fff; box-shadow: 0 1px 3px rgb(30 25 15 / 0.1); outline: none; }
+.test-panel h2 { margin: 0 0 12px; font-size: 18px; font-weight: 700; }
+.test-samples { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.test-sample {
+  width: 100%;
+  min-height: 56px;
+  padding: 9px 14px;
+  border: 1px solid #c9c8c2;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--page-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+.test-sample:hover { background: #f4f3ef; }
+.test-sample-name { display: block; font-size: 15px; font-weight: 600; }
+.test-sample-text { display: block; overflow: hidden; font-size: 13px; line-height: 18px; color: var(--page-text-2); text-overflow: ellipsis; white-space: nowrap; }
+.test-custom { margin-top: 16px; }
+.test-custom label { display: block; margin-bottom: 6px; font-size: 15px; font-weight: 600; }
+.test-custom textarea {
+  display: block;
+  width: 100%;
+  min-height: 76px;
+  padding: 10px 12px;
+  border: 1px solid #8a8983;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--page-text);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.35;
+  resize: vertical;
+}
+.test-send {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 8px;
+  border: 0;
+  border-radius: 14px;
+  background: #1b1b1f;
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.test-send:disabled { background: #e4e3de; color: #5f5f64; cursor: not-allowed; }
+.test-note { margin: 10px 0 0; font-size: 13px; line-height: 18px; color: var(--page-text-2); }
+.test-sample:focus-visible, .test-custom textarea:focus-visible, .test-send:focus-visible, .strip-test-button:focus-visible {
+  outline: 3px solid var(--page-focus);
+  outline-offset: 2px;
+}
 
 .page-footer { padding: 14px 20px 18px; text-align: center; font-size: 13px; color: var(--page-text-2); }
 
@@ -158,21 +213,47 @@ body {
   flex: none;
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 8px;
   padding: 6px 12px calc(6px + env(safe-area-inset-bottom));
   background: var(--page-bg);
 }
-.bare-strip .switch-option { min-width: 112px; }
+.strip-test-button {
+  flex: none;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 14px;
+  background: #1b1b1f;
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.bare-strip .switch-option { min-width: 94px; padding: 0 10px; gap: 6px; }
 .stage-bare[data-platform='android'] .bare-screen { background: #000; }
 .stage-bare[data-platform='android'] .bare-strip { background: #000; }
 .stage-bare[data-platform='android'] .switch { background: #2c2c30; }
+.stage-bare[data-platform='android'] .strip-test-button { background: #fafafa; color: #000; }
 .stage-bare[data-platform='android'] .switch-option { color: #fafafa; }
 .stage-bare[data-platform='android'] .switch-option[data-active='true'] { background: #55555c; box-shadow: none; }
 
-@media (max-width: 1039px) {
-  .page-main { grid-template-columns: 1fr; justify-items: center; padding: 20px 16px 8px; }
+@media (max-width: 1279px) {
+  .page-main { grid-template-columns: auto minmax(320px, 380px); justify-content: center; }
+  .stage { grid-column: 1; }
+  .page-side { grid-column: 2; }
+}
+
+@media (max-width: 879px) {
+  .page-main { grid-template-columns: minmax(0, 1fr); justify-items: center; padding: 20px 16px 8px; }
   .stage, .page-side { grid-column: 1; }
-  .page-side { padding-top: 0; text-align: center; }
+  .page-side { padding-top: 0; }
+}
+
+@media (max-width: 359px) {
+  .bare-strip .switch-option { min-width: 80px; padding: 0 6px; }
 }
 
 @media (max-width: 639px) {

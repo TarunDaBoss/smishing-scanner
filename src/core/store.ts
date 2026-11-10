@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react'
 import { LEVEL_RANK } from './detection'
 import type { Detection } from './detection'
 import type { LinkAnalysis } from './linkCheck'
-import { createThreads } from './seed'
+import { createIncomingThread, createThreads } from './seed'
 import type { AppState, Message, Nav, Platform, Thread } from './types'
 
 export type Action =
@@ -19,6 +19,8 @@ export type Action =
   | { type: 'scan-start'; messageId: string }
   | { type: 'scan-done'; messageId: string; result: LinkAnalysis }
   | { type: 'set-search'; search: string }
+  | { type: 'receive'; id: number; text: string; at: number }
+  | { type: 'clear-notification'; id: number }
   | { type: 'set-draft'; threadId: string; text: string }
 
 let nextToastId = 1
@@ -34,6 +36,7 @@ export function initialState(): AppState {
     lastDeleted: null,
     search: '',
     drafts: {},
+    notification: null,
   }
 }
 
@@ -101,6 +104,18 @@ export function reducer(state: AppState, action: Action): AppState {
     case 'scan-done':
       return { ...state, scans: { ...state.scans, [action.messageId]: { status: 'done', result: action.result } } }
 
+    case 'receive': {
+      const thread = createIncomingThread(`test-${action.id}`, action.text, action.at, state.threads)
+      return {
+        ...state,
+        threads: [thread, ...state.threads],
+        notification: { id: action.id, threadId: thread.id, name: thread.name, text: action.text, level: thread.messages[0].detection?.level ?? 'none' },
+      }
+    }
+
+    case 'clear-notification':
+      return state.notification?.id === action.id ? { ...state, notification: null } : state
+
     case 'set-search':
       return { ...state, search: action.search }
 
@@ -146,6 +161,9 @@ export interface AppActions {
   scanLink: (messageId: string, link: LinkAnalysis) => void
   setSearch: (search: string) => void
   setDraft: (threadId: string, text: string) => void
+  receiveText: (text: string) => void
+  clearNotification: (id: number) => void
+  openNotification: (threadId: string, id: number) => void
 }
 
 export interface AppContextValue {

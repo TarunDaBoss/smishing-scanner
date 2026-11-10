@@ -1,4 +1,4 @@
-import type { Detection } from './detection'
+import type { Detection, RiskLevel } from './detection'
 import type { LinkAnalysis } from './linkCheck'
 
 export type Platform = 'ios' | 'android'
@@ -42,6 +42,14 @@ export interface DeletedThread {
   index: number
 }
 
+export interface PhoneNotification {
+  id: number
+  threadId: string
+  name: string
+  text: string
+  level: RiskLevel
+}
+
 export interface AppState {
   platform: Platform
   threads: Thread[]
@@ -52,4 +60,5 @@ export interface AppState {
   lastDeleted: DeletedThread | null
   search: string
   drafts: Record<string, string>
+  notification: PhoneNotification | null
 }

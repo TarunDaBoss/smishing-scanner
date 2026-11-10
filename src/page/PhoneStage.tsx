@@ -21,6 +21,12 @@ function useFrameScale() {
   return scale
 }
 
+function showTestPanel() {
+  const panel = document.getElementById('send-test')
+  panel?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
+  panel?.focus({ preventScroll: true })
+}
+
 export function PhoneStage() {
   const { state } = useApp()
   const framed = useMediaQuery('(min-width: 640px)')
@@ -34,6 +40,7 @@ export function PhoneStage() {
         <div className="bare-screen">{app}</div>
         <div className="bare-strip">
           <PlatformSwitch />
+          <button type="button" className="strip-test-button" aria-label="Send a test text" onClick={showTestPanel}>Test text</button>
         </div>
       </section>
     )

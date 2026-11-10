@@ -47,3 +47,25 @@ export function createThreads(now = Date.now()): Thread[] {
     thread('unknown', '+1 (555) 010-0119', false, [['in', SAMPLE_UNKNOWN, 400]], now),
   ]
 }
+
+function testNumber(taken: Set<string>): string {
+  for (let suffix = 20; suffix <= 99; suffix++) {
+    const number = `+1 (555) 010-01${suffix}`
+    if (!taken.has(number)) return number
+  }
+  return '+1 (555) 010-0100'
+}
+
+/** A text from the test panel. It always comes from an unknown, fictional number. */
+export function createIncomingThread(id: string, text: string, at: number, existing: Thread[]): Thread {
+  const name = testNumber(new Set(existing.map((thread) => thread.name)))
+  return {
+    id,
+    name,
+    isContact: false,
+    messages: [{ id: `${id}-0`, direction: 'in', text, at, detection: detect(text, false) }],
+    unread: true,
+    markedSafe: false,
+    blocked: false,
+  }
+}

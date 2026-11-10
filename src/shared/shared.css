@@ -23,7 +23,7 @@
 .link-off-icon { display: inline-block; vertical-align: -1px; margin-right: 3px; }
 .link-plain { color: var(--link); text-decoration: underline; word-break: break-word; }
 
-.highlighted-message { margin: 0; line-height: 1.42; word-break: break-word; }
+.highlighted-message { margin: 0; line-height: 1.42; word-break: break-word; white-space: pre-wrap; }
 .highlighted-message mark {
   color: inherit;
   background: var(--risk-mark);
