@@ -53,6 +53,10 @@ The interface only claims what the app really does.
 - Sample numbers use the reserved fictional 555-01xx range, so no real person is
   labeled a scammer.
 - No control that does nothing: if it can't work, it isn't drawn as a button.
+  One exception, requested during review to match the real iPhone screen: the
+  camera, apps and mic icons by the message field and the video icon in the header
+  are decorative. They are not buttons, can't be focused, and are hidden from
+  screen readers.
 
 ### Accessibility
 Text contrast at least 4.5:1, tap targets at least 44px, keyboard navigation with
@@ -78,6 +82,12 @@ visible focus, screen reader labels on warnings and buttons.
   `src/ios/` and `src/android/`.
 - Motion: iPhone uses a push slide and left-edge swipe. Android uses Material
   shared-axis transitions and a predictive back gesture from either edge.
+- The iPhone conversation screen follows the classic Messages layout, chosen in
+  review: solid top bar, centered avatar and name, outlined message field.
+- A drawn iPhone keyboard appears when the message field is focused, only on
+  framed desktop views with a mouse. Real phones use their own keyboard. Its keys
+  are under 44px wide, like a real keyboard, and are hidden from screen readers
+  because the physical keyboard is the equivalent way to type.
 - Navigation is tied to browser history, so the phone's back gesture and the
   browser's Back button close the sheet or thread.
 

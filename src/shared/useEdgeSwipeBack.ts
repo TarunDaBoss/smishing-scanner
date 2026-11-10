@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import type { RefObject } from 'react'
 
 const EDGE_WIDTH = 28
+const START_DISTANCE = 8
 const COMMIT_VELOCITY = 0.55 // pixels per millisecond
 
 interface Options {
@@ -24,8 +25,11 @@ export function useEdgeSwipeBack(ref: RefObject<HTMLElement | null>, enabled: bo
     let lastTime = 0
     let velocity = 0
     let direction = 1
+    let startY = 0
+    let dragging = false
 
     const onDown = (event: PointerEvent) => {
+      if ((event.target as HTMLElement).closest('[data-no-edge-swipe]')) return
       const rect = nav.getBoundingClientRect()
       const fromLeft = event.clientX - rect.left <= EDGE_WIDTH
       const fromRight = bothEdges && rect.right - event.clientX <= EDGE_WIDTH
@@ -37,13 +41,24 @@ export function useEdgeSwipeBack(ref: RefObject<HTMLElement | null>, enabled: bo
       lastTime = event.timeStamp
       velocity = 0
       width = rect.width
-      nav.setPointerCapture(pointer)
-      nav.classList.add('is-swiping')
-      nav.style.setProperty('--swipe', '0')
+      startY = event.clientY
+      dragging = false
     }
 
     const onMove = (event: PointerEvent) => {
       if (event.pointerId !== pointer) return
+      if (!dragging) {
+        // Only take over once the pointer really moves sideways, so taps on
+        // controls near the screen edge still reach them.
+        if (direction * (event.clientX - startX) < START_DISTANCE) {
+          if (Math.abs(event.clientY - startY) > START_DISTANCE) pointer = null
+          return
+        }
+        dragging = true
+        nav.setPointerCapture(event.pointerId)
+        nav.classList.add('is-swiping')
+        nav.style.setProperty('--swipe', '0')
+      }
       const elapsed = event.timeStamp - lastTime
       if (elapsed > 0) velocity = (direction * (event.clientX - lastX)) / elapsed
       lastX = event.clientX
@@ -55,6 +70,8 @@ export function useEdgeSwipeBack(ref: RefObject<HTMLElement | null>, enabled: bo
     const finish = (event: PointerEvent) => {
       if (event.pointerId !== pointer) return
       pointer = null
+      if (!dragging) return
+      dragging = false
       const progress = Number(nav.style.getPropertyValue('--swipe')) || 0
       const commit = event.type === 'pointerup' && (progress > commitDistance || velocity > COMMIT_VELOCITY)
       nav.classList.remove('is-swiping')

@@ -21,6 +21,17 @@ export function useThreadScreen(thread: Thread) {
     if (scroller) scroller.scrollTop = scroller.scrollHeight
   }, [thread.messages.length, thread.markedSafe, thread.blocked])
 
+  // When the on-screen keyboard shrinks the view, keep the newest message in sight.
+  useEffect(() => {
+    const scroller = scrollRef.current
+    if (!scroller) return
+    const observer = new ResizeObserver(() => {
+      scroller.scrollTop = scroller.scrollHeight
+    })
+    observer.observe(scroller)
+    return () => observer.disconnect()
+  }, [])
+
   const onKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') actions.back()
   }
