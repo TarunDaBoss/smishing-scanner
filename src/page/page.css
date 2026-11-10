@@ -1,0 +1,137 @@
+:root {
+  --page-bg: #f1f0ec;
+  --page-text: #1b1b1f;
+  --page-text-2: #55555b;
+  --page-focus: #0a5fd6;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; background: var(--page-bg); }
+
+body {
+  color: var(--page-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page { min-height: 100dvh; display: flex; flex-direction: column; }
+
+.page-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+  padding: 20px 32px 8px;
+}
+
+.stage { grid-column: 2; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+.page-side { grid-column: 3; max-width: 360px; padding-top: 48px; }
+.page-title { margin: 0 0 8px; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+.page-intro { margin: 0; font-size: 16px; line-height: 1.45; color: var(--page-text-2); }
+
+.page-footer { padding: 14px 20px 18px; text-align: center; font-size: 13px; color: var(--page-text-2); }
+
+.frame-scale { transform-origin: top left; }
+
+.switch {
+  display: inline-flex;
+  gap: 2px;
+  margin: 0;
+  padding: 3px;
+  border: 0;
+  border-radius: 14px;
+  background: #dfded8;
+}
+
+.switch-option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 124px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--page-text);
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+.switch-option[data-active='true'] { background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / 0.18); }
+.switch-option[data-disabled='true'] { color: #5f5f64; cursor: not-allowed; }
+.switch-option input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: inherit; }
+.switch-option:has(input:focus-visible) { outline: 3px solid var(--page-focus); outline-offset: 2px; }
+
+/* The drawn iPhone */
+.iphone { position: relative; width: 428px; height: 900px; }
+.iphone-bezel {
+  position: absolute;
+  inset: 0;
+  padding: 13px;
+  border-radius: 73px;
+  background: #0b0b0d;
+  box-shadow:
+    0 0 0 2px #8d8a84,
+    0 0 0 3.5px #c9c6bf,
+    inset 0 0 3px 1px rgb(255 255 255 / 0.2),
+    0 30px 60px -18px rgb(30 25 15 / 0.45);
+}
+.iphone-screen {
+  position: relative;
+  width: 402px;
+  height: 874px;
+  overflow: hidden;
+  border-radius: 60px;
+  background: #fff;
+  isolation: isolate;
+}
+.iphone-island {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  width: 126px;
+  height: 37px;
+  transform: translateX(-50%);
+  border-radius: 20px;
+  background: #000;
+  z-index: 100;
+  pointer-events: none;
+}
+.iphone-button {
+  position: absolute;
+  width: 4px;
+  background: linear-gradient(90deg, #77746e, #bdbab3);
+}
+.iphone-action { left: -4px; top: 172px; height: 34px; border-radius: 3px 0 0 3px; }
+.iphone-volume-up { left: -4px; top: 234px; height: 64px; border-radius: 3px 0 0 3px; }
+.iphone-volume-down { left: -4px; top: 314px; height: 64px; border-radius: 3px 0 0 3px; }
+.iphone-power { right: -4px; top: 262px; height: 100px; border-radius: 0 3px 3px 0; transform: scaleX(-1); }
+
+/* Real phones: no frame, the app fills the screen. */
+.stage-bare { width: 100%; height: 100dvh; gap: 0; }
+.bare-screen { position: relative; flex: 1; width: 100%; min-height: 0; overflow: hidden; background: #fff; }
+.bare-strip {
+  flex: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 6px 12px calc(6px + env(safe-area-inset-bottom));
+  background: var(--page-bg);
+}
+.bare-strip .switch-option { min-width: 112px; }
+
+@media (max-width: 1039px) {
+  .page-main { grid-template-columns: 1fr; justify-items: center; padding: 20px 16px 8px; }
+  .stage, .page-side { grid-column: 1; }
+  .page-side { padding-top: 0; text-align: center; }
+}
+
+@media (max-width: 639px) {
+  .page-main { padding: 0; gap: 20px; }
+  .page-side { padding: 0 16px; }
+}

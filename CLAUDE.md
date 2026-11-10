@@ -8,6 +8,11 @@ Android (Samsung Messages, One UI), switchable with shared state.
 - **Live link:** not published yet (planned: https://tarundaboss.github.io/smishing-scanner/)
 - **Commands:** `npm run dev`, `npm test`, `npm run lint`, `npm run build`
 
+## Status
+- Done: detection, iPhone version.
+- Next: Android version (the switch's Android option is disabled until then),
+  then the test-text panel, then publishing.
+
 ## Key decisions
 
 ### No Figma calls
