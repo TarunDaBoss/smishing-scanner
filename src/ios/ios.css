@@ -503,33 +503,61 @@
 @keyframes ios-toast-in { from { transform: translateY(20px); opacity: 0; } }
 .ios-toast-undo { color: #8ec5ff !important; font-weight: 700 !important; }
 
-/* Notification banner */
-.ios-notification-region { position: absolute; left: 10px; right: 10px; top: calc(var(--safe-top) + 4px); z-index: 80; }
+/* Notification banner: Liquid Glass, with the sender's avatar and a small app badge. */
+.ios-notification-region { position: absolute; left: 9px; right: 9px; top: calc(var(--safe-top) + 3px); z-index: 80; }
 .ios[data-framed='false'] .ios-notification-region { top: calc(var(--safe-top) + 8px); }
 .ios-notification {
+  /* Slightly deeper warning colors, so the words stay readable through the glass. */
+  --scam-fg: #a8000c;
+  --spam-fg: #7f3d00;
+  --gray-fg: #48484e;
+
   display: flex !important;
   width: 100%;
-  gap: 11px;
-  align-items: flex-start;
-  padding: 13px 15px !important;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 15px 12px 13px !important;
   border-radius: 28px;
-  background: rgb(250 250 252 / 0.94) !important;
+  background: rgb(255 255 255 / 0.62) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  backdrop-filter: blur(20px) saturate(190%);
+  border: 0.5px solid rgb(255 255 255 / 0.8);
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / 0.9),
+    inset 0 -1px 1px rgb(255 255 255 / 0.35),
+    inset 0 0 12px rgb(255 255 255 / 0.25),
+    0 10px 30px rgb(0 0 0 / 0.16),
+    0 0 0 0.5px rgb(0 0 0 / 0.05);
   text-align: left;
   touch-action: none;
   transform: translateY(var(--notification-drag, 0));
   transition: transform 0.3s var(--spring), opacity 0.3s;
   animation: ios-notification-in 0.55s var(--spring);
 }
-.ios-notification[data-open='false'] { transform: translateY(-150%); opacity: 0; }
+.ios-notification[data-open='false'] { transform: translateY(-150%) scale(0.96); opacity: 0; }
 .ios-notification.is-dragging { transition: none; }
-@keyframes ios-notification-in { from { transform: translateY(-150%); opacity: 0.4; } }
-.ios-notification-app { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 9px; background: linear-gradient(180deg, #67e86f, #18c13a); color: #fff; }
-.ios-notification-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.ios-notification-top { display: flex; justify-content: space-between; gap: 8px; }
-.ios-notification-name { overflow: hidden; font-size: 15px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
-.ios-notification-time { flex: none; font-size: 13px; color: var(--text-2); }
-.ios-notification-risk { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 600; color: var(--risk-fg); }
-.ios-notification-body { font-size: 15px; line-height: 20px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; word-break: break-word; }
+@keyframes ios-notification-in { from { transform: translateY(-130%) scale(0.94); opacity: 0.4; } }
+.ios-notification-avatar { position: relative; flex: none; display: block; width: 40px; height: 40px; }
+.ios-notification-avatar .ios-avatar { display: flex; }
+.ios-notification-badge {
+  position: absolute;
+  right: -4px;
+  bottom: -3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #67e86f, #18c13a);
+  color: #fff;
+}
+.ios-notification-text { flex: 1; min-width: 0; display: flex; flex-direction: column; font-size: 15px; line-height: 20px; }
+.ios-notification-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.ios-notification-name { overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.ios-notification-time { flex: none; font-size: 13px; color: #4c4c52; }
+.ios-notification-risk { display: flex; align-items: center; gap: 4px; font-weight: 600; color: var(--risk-fg); }
+.ios-notification-body { color: #000; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; word-break: break-word; }
 
 @media (prefers-reduced-motion: reduce) {
   .ios-notification { animation: none !important; transition-duration: 0.01s !important; }

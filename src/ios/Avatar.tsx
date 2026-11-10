@@ -1,6 +1,6 @@
 import type { Thread } from '../core/types'
 
-export function Avatar({ thread, size }: { thread: Thread; size: number }) {
+export function Avatar({ thread, size }: { thread: Pick<Thread, 'isContact' | 'name' | 'tint'>; size: number }) {
   if (thread.isContact) {
     return (
       <span className="ios-avatar" style={{ width: size, height: size, background: thread.tint, fontSize: size * 0.44 }} aria-hidden="true">

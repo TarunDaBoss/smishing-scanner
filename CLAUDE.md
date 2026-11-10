@@ -64,8 +64,9 @@ visible focus, screen reader labels on warnings and buttons.
 
 ### Layout
 - Both phone frames are drawn in code. No device photos, no Apple or Samsung logos.
-- One deliberate exception, requested during review: the iPhone notification uses a
-  Messages-style app icon (green with a white bubble), drawn in code.
+- One deliberate exception, requested during review: the iPhone notification has a
+  small Messages-style badge (green with a white bubble) on the sender's avatar,
+  drawn in code.
 - iPhone is light and Android is dark, matching the original designs.
 - iPhone font: system stack, Inter as fallback. Android font: Roboto.
 - Narrow screens (under 640px): no frame, no fake status bar, the app fills the
