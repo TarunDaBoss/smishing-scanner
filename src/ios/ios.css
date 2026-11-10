@@ -429,7 +429,7 @@
 
 .ios .sheet-actions { flex: none; display: flex; flex-direction: column; gap: 8px; }
 .ios .sheet-more { display: flex; gap: 8px; }
-.ios .sheet-more .ios .sheet-action { flex: 1 1 0; min-width: 0; padding: 0 4px; font-size: 15px !important; }
+.ios .sheet-more .sheet-action { flex: 1 1 0; min-width: 0; padding: 0 4px; font-size: 15px !important; }
 .ios .sheet-action {
   min-height: 56px;
   border-radius: 28px;
@@ -523,7 +523,7 @@
 .ios-notification[data-open='false'] { transform: translateY(-150%); opacity: 0; }
 .ios-notification.is-dragging { transition: none; }
 @keyframes ios-notification-in { from { transform: translateY(-150%); opacity: 0.4; } }
-.ios-notification-app { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(180deg, #6b6f7a, #474a53); color: #fff; }
+.ios-notification-app { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 9px; background: linear-gradient(180deg, #67e86f, #18c13a); color: #fff; }
 .ios-notification-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .ios-notification-top { display: flex; justify-content: space-between; gap: 8px; }
 .ios-notification-name { overflow: hidden; font-size: 15px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }

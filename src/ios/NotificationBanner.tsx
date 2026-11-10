@@ -18,7 +18,7 @@ export function NotificationBanner() {
           {...buttonProps}
         >
           <span className="ios-notification-app" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <svg width="31" height="31" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 3.5c-5 0-9 3.3-9 7.5 0 2.5 1.4 4.7 3.7 6.1-.2 1.2-.8 2.3-1.5 3.2 1.8-.2 3.4-.9 4.7-1.9.7.1 1.4.2 2.1.2 5 0 9-3.3 9-7.6s-4-7.5-9-7.5Z" />
             </svg>
           </span>
