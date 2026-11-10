@@ -63,7 +63,6 @@ body {
   transition: background-color 0.2s, box-shadow 0.2s;
 }
 .switch-option[data-active='true'] { background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / 0.18); }
-.switch-option[data-disabled='true'] { color: #5f5f64; cursor: not-allowed; }
 .switch-option input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: inherit; }
 .switch-option:has(input:focus-visible) { outline: 3px solid var(--page-focus); outline-offset: 2px; }
 
@@ -112,6 +111,46 @@ body {
 .iphone-volume-down { left: -4px; top: 314px; height: 64px; border-radius: 3px 0 0 3px; }
 .iphone-power { right: -4px; top: 262px; height: 100px; border-radius: 0 3px 3px 0; transform: scaleX(-1); }
 
+/* The drawn Galaxy: flatter sides, tighter corners, one centered camera hole. */
+.galaxy { position: relative; width: 428px; height: 900px; }
+.galaxy-bezel {
+  position: absolute;
+  inset: 0;
+  padding: 10px;
+  border-radius: 54px;
+  background: #050506;
+  box-shadow:
+    0 0 0 2px #4b4c50,
+    0 0 0 3.5px #8a8b90,
+    inset 0 0 2px 1px rgb(255 255 255 / 0.14),
+    0 30px 60px -18px rgb(30 25 15 / 0.45);
+}
+.galaxy-screen {
+  position: relative;
+  width: 408px;
+  height: 880px;
+  overflow: hidden;
+  border-radius: 45px;
+  background: #000;
+  isolation: isolate;
+}
+.galaxy-camera {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 40%, #1d2230 0 22%, #06070a 58%, #000 100%);
+  box-shadow: 0 0 0 1px #17181b;
+  z-index: 100;
+  pointer-events: none;
+}
+.galaxy-button { position: absolute; right: -4px; width: 4px; border-radius: 0 3px 3px 0; background: linear-gradient(90deg, #8a8b90, #55565a); }
+.galaxy-volume { top: 190px; height: 116px; }
+.galaxy-power { top: 334px; height: 66px; }
+
 /* Real phones: no frame, the app fills the screen. */
 .stage-bare { width: 100%; height: 100dvh; gap: 0; }
 .bare-screen { position: relative; flex: 1; width: 100%; min-height: 0; overflow: hidden; background: #fff; }
@@ -124,6 +163,11 @@ body {
   background: var(--page-bg);
 }
 .bare-strip .switch-option { min-width: 112px; }
+.stage-bare[data-platform='android'] .bare-screen { background: #000; }
+.stage-bare[data-platform='android'] .bare-strip { background: #000; }
+.stage-bare[data-platform='android'] .switch { background: #2c2c30; }
+.stage-bare[data-platform='android'] .switch-option { color: #fafafa; }
+.stage-bare[data-platform='android'] .switch-option[data-active='true'] { background: #55555c; box-shadow: none; }
 
 @media (max-width: 1039px) {
   .page-main { grid-template-columns: 1fr; justify-items: center; padding: 20px 16px 8px; }

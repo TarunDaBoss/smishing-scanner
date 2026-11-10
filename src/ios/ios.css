@@ -397,7 +397,7 @@
 .ios-sheet-title { font-size: 17px; font-weight: 600; line-height: 26px; }
 .ios-sheet-close { position: absolute !important; top: 12px; right: 12px; color: #3a3a3f; }
 
-.ios-sheet-body {
+.ios .sheet-body {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -413,23 +413,23 @@
   scrollbar-width: none;
   user-select: text;
 }
-.ios-sheet-body::-webkit-scrollbar { display: none; }
+.ios .sheet-body::-webkit-scrollbar { display: none; }
 
-.ios-sheet-level { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px; }
-.ios-sheet-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 18px; font-weight: 700; color: var(--risk-fg); }
-.ios-sheet-confidence { font-size: 14px; color: var(--text-2); }
-.ios-sheet-confidence strong { color: var(--text-1); font-weight: 600; }
+.ios .sheet-level { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px; }
+.ios .sheet-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 18px; font-weight: 700; color: var(--risk-fg); }
+.ios .sheet-confidence { font-size: 14px; color: var(--text-2); }
+.ios .sheet-confidence strong { color: var(--text-1); font-weight: 600; }
 
-.ios-sheet-card { flex: none; padding: 12px 14px; border-radius: 20px; background: #fff; }
+.ios .sheet-card { flex: none; padding: 12px 14px; border-radius: 20px; background: #fff; }
 
-.ios-sheet-facts { flex: none; display: grid; gap: 6px; padding: 2px 4px !important; font-size: 14px; color: #3a3a3f; }
-.ios-sheet-facts li { display: flex; align-items: center; gap: 8px; }
-.ios-sheet-facts svg { flex: none; }
+.ios .sheet-facts { flex: none; display: grid; gap: 6px; padding: 2px 4px !important; font-size: 14px; color: #3a3a3f; }
+.ios .sheet-facts li { display: flex; align-items: center; gap: 8px; }
+.ios .sheet-facts svg { flex: none; }
 
-.ios-sheet-actions { flex: none; display: flex; flex-direction: column; gap: 8px; }
-.ios-sheet-more { display: flex; gap: 8px; }
-.ios-sheet-more .ios-action { flex: 1 1 0; min-width: 0; padding: 0 4px; font-size: 15px !important; }
-.ios-action {
+.ios .sheet-actions { flex: none; display: flex; flex-direction: column; gap: 8px; }
+.ios .sheet-more { display: flex; gap: 8px; }
+.ios .sheet-more .ios .sheet-action { flex: 1 1 0; min-width: 0; padding: 0 4px; font-size: 15px !important; }
+.ios .sheet-action {
   min-height: 56px;
   border-radius: 28px;
   background: #fff !important;
@@ -438,9 +438,9 @@
   box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.08);
   transition: transform 0.15s, background-color 0.15s;
 }
-.ios-action:active { transform: scale(0.98); background: #ececf0 !important; }
-.ios-action-danger { background: #d70015 !important; color: #fff !important; }
-.ios-action-danger:active { background: #b40012 !important; }
+.ios .sheet-action:active { transform: scale(0.98); background: #ececf0 !important; }
+.ios .sheet-action-danger { background: #d70015 !important; color: #fff !important; }
+.ios .sheet-action-danger:active { background: #b40012 !important; }
 
 /* Alert */
 .ios-alert-scrim {

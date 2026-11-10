@@ -2,11 +2,17 @@ import { useEffect } from 'react'
 import type { RefObject } from 'react'
 
 const EDGE_WIDTH = 28
-const COMMIT_DISTANCE = 0.38
 const COMMIT_VELOCITY = 0.55 // pixels per millisecond
 
-/** Dragging in from the left edge pulls the thread away, as on a real iPhone. */
-export function useEdgeSwipeBack(ref: RefObject<HTMLElement | null>, enabled: boolean, onBack: () => void) {
+interface Options {
+  /** Android's back gesture works from either side. iPhone's is left only. */
+  bothEdges: boolean
+  /** How far across the screen, from 0 to 1, a drag must go to count. */
+  commitDistance: number
+}
+
+/** Dragging in from the screen edge goes back, following the finger. */
+export function useEdgeSwipeBack(ref: RefObject<HTMLElement | null>, enabled: boolean, onBack: () => void, { bothEdges, commitDistance }: Options) {
   useEffect(() => {
     const nav = ref.current
     if (!nav || !enabled) return
@@ -17,10 +23,15 @@ export function useEdgeSwipeBack(ref: RefObject<HTMLElement | null>, enabled: bo
     let lastX = 0
     let lastTime = 0
     let velocity = 0
+    let direction = 1
 
     const onDown = (event: PointerEvent) => {
       const rect = nav.getBoundingClientRect()
-      if (event.clientX - rect.left > EDGE_WIDTH) return
+      const fromLeft = event.clientX - rect.left <= EDGE_WIDTH
+      const fromRight = bothEdges && rect.right - event.clientX <= EDGE_WIDTH
+      if (!fromLeft && !fromRight) return
+      direction = fromLeft ? 1 : -1
+      nav.dataset.edge = fromLeft ? 'left' : 'right'
       pointer = event.pointerId
       startX = lastX = event.clientX
       lastTime = event.timeStamp
@@ -34,10 +45,10 @@ export function useEdgeSwipeBack(ref: RefObject<HTMLElement | null>, enabled: bo
     const onMove = (event: PointerEvent) => {
       if (event.pointerId !== pointer) return
       const elapsed = event.timeStamp - lastTime
-      if (elapsed > 0) velocity = (event.clientX - lastX) / elapsed
+      if (elapsed > 0) velocity = (direction * (event.clientX - lastX)) / elapsed
       lastX = event.clientX
       lastTime = event.timeStamp
-      const progress = Math.max(0, Math.min(1, (event.clientX - startX) / width))
+      const progress = Math.max(0, Math.min(1, (direction * (event.clientX - startX)) / width))
       nav.style.setProperty('--swipe', String(progress))
     }
 
@@ -45,7 +56,7 @@ export function useEdgeSwipeBack(ref: RefObject<HTMLElement | null>, enabled: bo
       if (event.pointerId !== pointer) return
       pointer = null
       const progress = Number(nav.style.getPropertyValue('--swipe')) || 0
-      const commit = event.type === 'pointerup' && (progress > COMMIT_DISTANCE || velocity > COMMIT_VELOCITY)
+      const commit = event.type === 'pointerup' && (progress > commitDistance || velocity > COMMIT_VELOCITY)
       nav.classList.remove('is-swiping')
       nav.style.removeProperty('--swipe')
       if (commit) {
@@ -66,5 +77,5 @@ export function useEdgeSwipeBack(ref: RefObject<HTMLElement | null>, enabled: bo
       nav.removeEventListener('pointerup', finish)
       nav.removeEventListener('pointercancel', finish)
     }
-  }, [ref, enabled, onBack])
+  }, [ref, enabled, onBack, bothEdges, commitDistance])
 }

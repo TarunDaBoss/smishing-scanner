@@ -10,9 +10,9 @@ function PhoneGlyph({ platform }: { platform: Platform }) {
   )
 }
 
-const OPTIONS: { value: Platform; label: string; ready: boolean }[] = [
-  { value: 'ios', label: 'iPhone', ready: true },
-  { value: 'android', label: 'Android', ready: false },
+const OPTIONS: { value: Platform; label: string }[] = [
+  { value: 'ios', label: 'iPhone' },
+  { value: 'android', label: 'Android' },
 ]
 
 export function PlatformSwitch() {
@@ -21,13 +21,12 @@ export function PlatformSwitch() {
     <fieldset className="switch">
       <legend className="sr-only">Phone type</legend>
       {OPTIONS.map((option) => (
-        <label key={option.value} className="switch-option" data-active={state.platform === option.value} data-disabled={!option.ready}>
+        <label key={option.value} className="switch-option" data-active={state.platform === option.value}>
           <input
             type="radio"
             name="platform"
             value={option.value}
             checked={state.platform === option.value}
-            disabled={!option.ready}
             onChange={() => actions.setPlatform(option.value)}
           />
           <PhoneGlyph platform={option.value} />

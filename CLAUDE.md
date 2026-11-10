@@ -9,9 +9,8 @@ Android (Samsung Messages, One UI), switchable with shared state.
 - **Commands:** `npm run dev`, `npm test`, `npm run lint`, `npm run build`
 
 ## Status
-- Done: detection, iPhone version.
-- Next: Android version (the switch's Android option is disabled until then),
-  then the test-text panel, then publishing.
+- Done: detection, iPhone version, Android version.
+- Next: the test-text panel and notifications, then publishing.
 
 ## Key decisions
 
@@ -69,6 +68,13 @@ visible focus, screen reader labels on warnings and buttons.
 - iPhone font: system stack, Inter as fallback. Android font: Roboto.
 - Narrow screens (under 640px): no frame, no fake status bar, the app fills the
   screen, with the platform switch in a strip at the bottom.
+- Both frames have the same outer size, so switching doesn't move the page.
+- Switching phones keeps everything: conversations, the open thread or sheet, a
+  scan in progress, drafts and search text. It all lives in `src/core/store.ts`.
+- Logic is shared in `src/shared/` and `src/core/`. Only the look lives in
+  `src/ios/` and `src/android/`.
+- Motion: iPhone uses a push slide and left-edge swipe. Android uses Material
+  shared-axis transitions and a predictive back gesture from either edge.
 - Navigation is tied to browser history, so the phone's back gesture and the
   browser's Back button close the sheet or thread.
 

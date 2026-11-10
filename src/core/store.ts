@@ -18,6 +18,8 @@ export type Action =
   | { type: 'set-safe'; threadId: string; safe: boolean }
   | { type: 'scan-start'; messageId: string }
   | { type: 'scan-done'; messageId: string; result: LinkAnalysis }
+  | { type: 'set-search'; search: string }
+  | { type: 'set-draft'; threadId: string; text: string }
 
 let nextToastId = 1
 
@@ -30,6 +32,8 @@ export function initialState(): AppState {
     alertThreadId: null,
     toast: null,
     lastDeleted: null,
+    search: '',
+    drafts: {},
   }
 }
 
@@ -51,7 +55,11 @@ export function reducer(state: AppState, action: Action): AppState {
     }
 
     case 'send':
-      return { ...state, threads: updateThread(state, action.threadId, (thread) => ({ ...thread, messages: [...thread.messages, action.message] })) }
+      return {
+        ...state,
+        drafts: { ...state.drafts, [action.threadId]: '' },
+        threads: updateThread(state, action.threadId, (thread) => ({ ...thread, messages: [...thread.messages, action.message] })),
+      }
 
     case 'delete-thread': {
       const index = state.threads.findIndex((thread) => thread.id === action.threadId)
@@ -92,6 +100,12 @@ export function reducer(state: AppState, action: Action): AppState {
 
     case 'scan-done':
       return { ...state, scans: { ...state.scans, [action.messageId]: { status: 'done', result: action.result } } }
+
+    case 'set-search':
+      return { ...state, search: action.search }
+
+    case 'set-draft':
+      return { ...state, drafts: { ...state.drafts, [action.threadId]: action.text } }
   }
 }
 
@@ -130,6 +144,8 @@ export interface AppActions {
   markSafe: (threadId: string) => void
   undoSafe: (threadId: string) => void
   scanLink: (messageId: string, link: LinkAnalysis) => void
+  setSearch: (search: string) => void
+  setDraft: (threadId: string, text: string) => void
 }
 
 export interface AppContextValue {

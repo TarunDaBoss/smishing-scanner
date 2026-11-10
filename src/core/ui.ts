@@ -21,6 +21,21 @@ export function formatStamp(at: number): string {
   return `${day} ${time.format(at)}`
 }
 
+export function formatTime(at: number): string {
+  return time.format(at)
+}
+
+export function formatDay(at: number): string {
+  const days = dayDifference(at, Date.now())
+  if (days === 0) return 'Today'
+  if (days === 1) return 'Yesterday'
+  return new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).format(at)
+}
+
+export function isSameDay(a: number, b: number): boolean {
+  return dayDifference(a, b) === 0
+}
+
 export function formatClock(at: number): string {
   return time.format(at).replace(/\s?[AP]M$/i, '')
 }
@@ -88,6 +103,11 @@ document.addEventListener('focusin', (event) => {
   lastFocused = event.target as HTMLElement
 })
 
+/** Flipping the phone type re-renders the phone, and shouldn't pull focus off the switch. */
+export function focusIsOnPlatformSwitch(): boolean {
+  return document.activeElement?.closest('.switch') != null
+}
+
 /** Keeps Tab inside a dialog, closes on Escape, and puts focus back afterwards. */
 export function useDialogFocus(ref: RefObject<HTMLElement | null>, onEscape: () => void) {
   const returnFocus = useRef(lastFocused)
@@ -101,7 +121,7 @@ export function useDialogFocus(ref: RefObject<HTMLElement | null>, onEscape: () 
     if (!element) return
     const previous = returnFocus.current
     const target = element.querySelector<HTMLElement>('[data-autofocus]') ?? element
-    target.focus({ preventScroll: true })
+    if (!focusIsOnPlatformSwitch()) target.focus({ preventScroll: true })
 
     // Listens on the document so these keys still work if the focused button
     // disappears. A dialog covered by another dialog is inert and stays out of it.
@@ -119,6 +139,7 @@ export function useDialogFocus(ref: RefObject<HTMLElement | null>, onEscape: () 
       const last = items[items.length - 1]
       const active = document.activeElement
       if (!element.contains(active)) {
+        if (focusIsOnPlatformSwitch()) return
         event.preventDefault()
         first.focus()
       } else if (event.shiftKey && (active === first || active === element)) {

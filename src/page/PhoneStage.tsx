@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useApp } from '../core/store'
 import { useMediaQuery } from '../core/ui'
+import { AndroidApp } from '../android/AndroidApp'
 import { IOSApp } from '../ios/IOSApp'
+import { GalaxyFrame } from './GalaxyFrame'
 import { IPHONE_FRAME_HEIGHT, IPHONE_FRAME_WIDTH, IPhoneFrame } from './IPhoneFrame'
 import { PlatformSwitch } from './PlatformSwitch'
 
@@ -23,11 +25,12 @@ export function PhoneStage() {
   const { state } = useApp()
   const framed = useMediaQuery('(min-width: 640px)')
   const scale = useFrameScale()
-  const app = state.platform === 'ios' ? <IOSApp framed={framed} /> : null
+  const isIOS = state.platform === 'ios'
+  const app = isIOS ? <IOSApp framed={framed} /> : <AndroidApp framed={framed} />
 
   if (!framed) {
     return (
-      <section className="stage stage-bare" aria-label="Phone">
+      <section className="stage stage-bare" aria-label="Phone" data-platform={state.platform}>
         <div className="bare-screen">{app}</div>
         <div className="bare-strip">
           <PlatformSwitch />
@@ -40,7 +43,7 @@ export function PhoneStage() {
     <section className="stage" aria-label="Phone">
       <div className="frame-space" style={{ width: IPHONE_FRAME_WIDTH * scale, height: IPHONE_FRAME_HEIGHT * scale }}>
         <div className="frame-scale" style={{ width: IPHONE_FRAME_WIDTH, height: IPHONE_FRAME_HEIGHT, transform: `scale(${scale})` }}>
-          <IPhoneFrame>{app}</IPhoneFrame>
+          {isIOS ? <IPhoneFrame>{app}</IPhoneFrame> : <GalaxyFrame>{app}</GalaxyFrame>}
         </div>
       </div>
       <PlatformSwitch />

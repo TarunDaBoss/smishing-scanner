@@ -1,18 +1,10 @@
-import { useMemo, useState } from 'react'
-import { threadsByRecency, useApp } from '../core/store'
+import { useState } from 'react'
+import { useFilteredThreads } from '../shared/useFilteredThreads'
 import { ConversationRow } from './ConversationRow'
 
 export function ConversationList() {
-  const { state } = useApp()
+  const { threads, query, setQuery } = useFilteredThreads()
   const [collapsed, setCollapsed] = useState(false)
-  const [query, setQuery] = useState('')
-
-  const threads = useMemo(() => {
-    const sorted = threadsByRecency(state.threads)
-    const term = query.trim().toLowerCase()
-    if (!term) return sorted
-    return sorted.filter((thread) => thread.name.toLowerCase().includes(term) || thread.messages.some((message) => message.text.toLowerCase().includes(term)))
-  }, [state.threads, query])
 
   return (
     <div className="ios-list">

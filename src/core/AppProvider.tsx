@@ -21,6 +21,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const actions = useMemo<AppActions>(
     () => ({
       setPlatform: (platform) => dispatch({ type: 'set-platform', platform }),
+      setSearch: (search) => dispatch({ type: 'set-search', search }),
+      setDraft: (threadId, text) => dispatch({ type: 'set-draft', threadId, text }),
       openThread: (threadId) => push({ threadId, sheetMessageId: null }),
       openSheet: (messageId) => push({ threadId: navRef.current.threadId, sheetMessageId: messageId }),
       back,

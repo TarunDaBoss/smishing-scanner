@@ -1,43 +1,25 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { useApp } from '../core/store'
-import { usePresence } from '../core/ui'
+import { useEdgeSwipeBack } from '../shared/useEdgeSwipeBack'
+import { usePhoneScreens } from '../shared/usePhoneScreens'
 import { ConfirmAlert } from './ConfirmAlert'
 import { ConversationList } from './ConversationList'
 import { StatusBar } from './StatusBar'
 import { ThreadView } from './ThreadView'
 import { Toast } from './Toast'
-import { useEdgeSwipeBack } from './useEdgeSwipeBack'
 import { WhyFlaggedSheet } from './WhyFlaggedSheet'
 
 const PUSH_MS = 460
 const SHEET_MS = 420
+const SWIPE = { bothEdges: false, commitDistance: 0.38 }
 
 export function IOSApp({ framed }: { framed: boolean }) {
-  const { state, actions } = useApp()
+  const { actions } = useApp()
   const navRef = useRef<HTMLDivElement>(null)
-
-  const openThread = state.threads.find((thread) => thread.id === state.nav.threadId) ?? null
-  const threadPresence = usePresence(openThread, PUSH_MS)
+  const { openThread, threadPresence, sheetPresence, alertThread, covered } = usePhoneScreens(navRef, PUSH_MS, SHEET_MS)
   const thread = threadPresence.item
 
-  const openMessage = openThread?.messages.find((message) => message.id === state.nav.sheetMessageId) ?? null
-  const sheetPresence = usePresence(openMessage, SHEET_MS)
-  const alertThread = state.threads.find((candidate) => candidate.id === state.alertThreadId) ?? null
-
-  const covered = sheetPresence.mounted || alertThread !== null
-  useEdgeSwipeBack(navRef, openThread !== null && !covered, actions.back)
-
-  // Going back returns keyboard focus to the conversation you came from.
-  const lastThreadId = useRef<string | null>(null)
-  useEffect(() => {
-    if (openThread) {
-      lastThreadId.current = openThread.id
-    } else if (lastThreadId.current) {
-      const id = lastThreadId.current
-      lastThreadId.current = null
-      navRef.current?.querySelector<HTMLElement>(`[data-thread-row="${id}"]`)?.focus({ preventScroll: true })
-    }
-  }, [openThread])
+  useEdgeSwipeBack(navRef, openThread !== null && !covered, actions.back, SWIPE)
 
   return (
     <div className="ios" data-framed={framed}>

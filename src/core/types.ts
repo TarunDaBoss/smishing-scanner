@@ -50,4 +50,6 @@ export interface AppState {
   alertThreadId: string | null
   toast: Toast | null
   lastDeleted: DeletedThread | null
+  search: string
+  drafts: Record<string, string>
 }
