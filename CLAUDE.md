@@ -5,7 +5,8 @@ app with scam detection built in. iPhone (iOS Messages, Liquid Glass) and
 Android (Samsung Messages, One UI), switchable with shared state.
 
 - **Stack:** React + TypeScript + Vite. No UI or animation libraries.
-- **Live link:** not published yet (planned: https://tarundaboss.github.io/smishing-scanner/)
+- **Live link:** https://tarundaboss.github.io/smishing-scanner/
+- **Repo:** https://github.com/TarunDaBoss/smishing-scanner (public, which GitHub Pages requires for free)
 - **Commands:** `npm run dev`, `npm test`, `npm run lint`, `npm run build`
 
 ## Status
@@ -78,4 +79,21 @@ visible focus, screen reader labels on warnings and buttons.
   browser's Back button close the sheet or thread.
 
 ## Publishing to GitHub Pages
-Not set up yet. This section gets filled in at the publish step.
+Every push to `main` goes live automatically through
+`.github/workflows/deploy-pages.yml`, which runs the tests, builds, and deploys.
+A failing test stops the deploy.
+
+To publish a change:
+1. Run `npm test` and `npm run build` locally.
+2. Commit and run `git push`.
+3. Watch it with `gh run watch`, or in the repo's Actions tab. It takes under a minute.
+
+To redeploy without a change, use Actions, Deploy to GitHub Pages, Run workflow.
+
+- The Vite `base` is `/smishing-scanner/`. It must match the repo name, or the
+  site loads with broken asset paths.
+- The repo's Pages setting is Source: GitHub Actions.
+- Commits use the GitHub no-reply address (set in this repo's git config), so no
+  personal email goes public.
+- Only this folder is in the repo. The original designs and review screenshots
+  stay outside it.
