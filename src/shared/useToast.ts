@@ -6,8 +6,10 @@ const TOAST_MS = 8000
 /** The current toast. It waits while the pointer or keyboard is on it, so Undo stays reachable. */
 export function useToast() {
   const { state, actions } = useApp()
-  const [held, setHeld] = useState(false)
   const toast = state.toast
+  // Tied to one toast: a toast that vanishes under the pointer never gets a "leave" event.
+  const [heldId, setHeldId] = useState<number | null>(null)
+  const held = toast !== null && heldId === toast.id
 
   useEffect(() => {
     if (!toast || held) return
@@ -16,10 +18,10 @@ export function useToast() {
   }, [toast, held, actions])
 
   const holdProps = {
-    onPointerEnter: () => setHeld(true),
-    onPointerLeave: () => setHeld(false),
-    onFocus: () => setHeld(true),
-    onBlur: () => setHeld(false),
+    onPointerEnter: () => setHeldId(toast?.id ?? null),
+    onPointerLeave: () => setHeldId(null),
+    onFocus: () => setHeldId(toast?.id ?? null),
+    onBlur: () => setHeldId(null),
   }
 
   return { toast, holdProps, undo: actions.undoDelete }

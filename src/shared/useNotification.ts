@@ -11,7 +11,9 @@ export function useNotification() {
   const { state, actions } = useApp()
   const current = state.notification
   const presence = usePresence(current, 320)
-  const [held, setHeld] = useState(false)
+  // Tied to one notification: a banner that vanishes under the pointer never gets a "leave" event.
+  const [heldId, setHeldId] = useState<number | null>(null)
+  const held = current !== null && heldId === current.id
   const drag = useRef<{ id: number; startY: number; distance: number } | null>(null)
   const wasSwiped = useRef(false)
 
@@ -31,10 +33,10 @@ export function useNotification() {
       }
       if (current) actions.openNotification(current.threadId, current.id)
     },
-    onPointerEnter: () => setHeld(true),
-    onPointerLeave: () => setHeld(false),
-    onFocus: () => setHeld(true),
-    onBlur: () => setHeld(false),
+    onPointerEnter: () => setHeldId(current?.id ?? null),
+    onPointerLeave: () => setHeldId(null),
+    onFocus: () => setHeldId(current?.id ?? null),
+    onBlur: () => setHeldId(null),
     onPointerDown: (event: PointerEvent<HTMLElement>) => {
       drag.current = { id: event.pointerId, startY: event.clientY, distance: 0 }
       event.currentTarget.setPointerCapture(event.pointerId)
